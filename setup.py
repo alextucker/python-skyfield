@@ -1,5 +1,17 @@
-from distutils.core import setup
+from distutils.core import setup, Command
+
 import skyfield  # to learn the version
+
+class PyTest(Command):
+    user_options = []
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+    def run(self):
+        import sys,subprocess
+        errno = subprocess.call([sys.executable, 'runtests.py'])
+        raise SystemExit(errno)
 
 setup(
     name='skyfield',
@@ -19,4 +31,5 @@ setup(
     packages=[ 'skyfield', 'skyfield.tests' ],
     package_data = {'skyfield': ['documentation/*.rst']},
     install_requires=['de421==2008', 'jplephem', 'numpy', 'sgp4'],
+    cmdclass = {'test': PyTest},
     )
